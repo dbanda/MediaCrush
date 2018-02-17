@@ -1,5 +1,5 @@
-from flask.ext.classy import FlaskView, route
-from flaskext.bcrypt import check_password_hash
+from flask_classy import FlaskView, route
+from flask_bcrypt import check_password_hash
 from flask import request, current_app, redirect
 
 from mediacrush.decorators import json_output, cors
@@ -184,12 +184,14 @@ class APIView(FlaskView):
 
     @route("/api/info")
     def info(self):
+        print("/api/info", request.args)
         if not "list" in request.args:
             return {'error': 400}, 400
         items = request.args['list'].split(',')
 
         res = {}
         for i in items:
+            print("item", i)
             klass = RedisObject.klass(i)
             if not klass or klass not in objects:
                 res[i] = None
@@ -216,7 +218,7 @@ class APIView(FlaskView):
 
         f = request.files['file']
         filename = ''.join(c for c in f.filename if c.isalnum() or c == '.')
-
+        print(type(f), filename)
         return _upload_object(*upload(f, filename))
 
     @route("/api/upload/url", methods=['POST'])

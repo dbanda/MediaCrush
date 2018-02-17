@@ -1,4 +1,4 @@
-from flask.ext.classy import FlaskView, route
+from flask_classy import FlaskView, route
 from flask import abort, request
 import json
 from subprocess import call

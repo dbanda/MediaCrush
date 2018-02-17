@@ -1,4 +1,4 @@
-from flask.ext.classy import FlaskView
+from flask_classy import FlaskView
 from flask import render_template, abort
 
 from ..config import _cfg
