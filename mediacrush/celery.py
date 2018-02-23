@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+
 
 from mediacrush.config import _cfg
 

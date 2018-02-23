@@ -30,6 +30,8 @@ class Invocation(object):
         if not self.args:
             self.args = self.command.split()
 
+        print("running Invocation:",self.command,self.args )
+
         thread = threading.Thread(target=self._target)
         thread.start()
         thread.join(timeout)

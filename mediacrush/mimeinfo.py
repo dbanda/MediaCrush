@@ -16,6 +16,6 @@ extension = lambda f: f.rsplit('.', 1)[1].lower()
 
 def get_mimetype(url):
     ext = extension(url) if "." in url else url
-    for k, v in EXTENSIONS.items():
+    for k, v in list(EXTENSIONS.items()):
         if v == ext:
             return k

@@ -7,7 +7,7 @@ try:
     from configparser import ConfigParser
 except ImportError:
     # Python 2 support
-    from ConfigParser import ConfigParser
+    from configparser import ConfigParser
 
 logger = logging.getLogger("MediaCrush")
 logger.setLevel(logging.DEBUG)

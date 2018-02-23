@@ -33,7 +33,7 @@ def init(args):
     for i in range(64 ** sharding_level):
         try:
             os.mkdir(os.path.join(folder, int2base(i, 64)))
-        except OSError, e:
+        except OSError as e:
             print(e)
 
 def migrate(args):
@@ -44,7 +44,7 @@ def migrate(args):
             newpath = os.path.join(base, shard(f))
 
             try:
-                print("Moving " + path + " into " + newpath)
+                print(("Moving " + path + " into " + newpath))
                 os.rename(path, newpath)
             except:
                 print("Move failed")

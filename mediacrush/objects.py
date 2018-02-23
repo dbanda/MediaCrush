@@ -12,7 +12,7 @@ class RedisObject(object):
     hash = None
 
     def __init__(self, **kw):
-        for k, v in kw.items():
+        for k, v in list(kw.items()):
             if v == "True" or v == "False":
                 v = v == "True"
 
@@ -20,8 +20,9 @@ class RedisObject(object):
                 v = None
 
             # If the value is a string, interpet it as UTF-8.
-            if type(v) == str:
-                v = v.decode('utf-8')
+            # commented out for python3
+            #if type(v) == str:
+            #    v = v.decode('utf-8')
 
             setattr(self, k, v)
 
@@ -36,11 +37,11 @@ class RedisObject(object):
 
             return d
 
-        names = filter(lambda x: not x[0].startswith("_"), inspect.getmembers(self))
-        names = filter(lambda x: not (inspect.isfunction(x[1]) or inspect.ismethod(x[1])), names)
+        names = [x for x in inspect.getmembers(self) if not x[0].startswith("_")]
+        names = [x for x in names if not (inspect.isfunction(x[1]) or inspect.ismethod(x[1]))]
 
         if "__exclude__" in dir(self):
-            names = filter(lambda x: x[0] not in self.__exclude__, names)
+            names = [x for x in names if x[0] not in self.__exclude__]
 
         return dict(names)
 
@@ -81,7 +82,10 @@ class RedisObject(object):
 
         obj['hash'] = hash
 
-        return cls(**obj)
+        #python3 convert keywords to str
+        args = stringify(obj)
+        print("loading from hash", args)
+        return cls(**args)
 
     @classmethod
     def get_all(cls):
@@ -98,6 +102,8 @@ class RedisObject(object):
         obj = self.__get_vars()
         del obj['hash']
 
+        obj = stringify(obj)
+        print("saving", obj)
         r.hmset(self.__get_key() , obj)
         r.sadd(_k(self.__class__.__name__.lower()), self.hash) # Add to type-set
 
@@ -179,7 +185,7 @@ class File(RedisObject):
 
         # When the processor is changed, so is the interpretation of the flags.
         options = flags_per_processor.get(normalise_processor(v), [])
-        self.flags = BitVector(options, iv=self._configvector)
+        self.flags = BitVector(options, iv=self.configvector)
 
 
 class Feedback(RedisObject):
@@ -226,6 +232,18 @@ class FailedFile(RedisObject):
     hash = None
     status = None
 
+
+def stringify(obj):
+    args = {}
+    for k in obj:
+        v = obj[k]
+        if type(v) == bytes:
+            v = v.decode()
+        if type(k) == bytes:
+            k = k.decode()
+        args[k] = v
+
+    return args
 if __name__ == '__main__':
     a = RedisObject.from_hash("11fcf48f2c44")
 

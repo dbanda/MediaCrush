@@ -56,7 +56,7 @@ mapping = {
 }
 
 def find_true(arguments, mapping_dict):
-    return filter(lambda x: x is not None, [item if arguments[item] else None for item in mapping_dict])[0]
+    return [x for x in [item if arguments[item] else None for item in mapping_dict] if x is not None][0]
 
 if __name__ == '__main__':
     arguments = docopt(__doc__, version='1.0')

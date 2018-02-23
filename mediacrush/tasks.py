@@ -16,7 +16,7 @@ logger = get_task_logger(__name__)
 @app.task
 def zip_album(h):
     a = Album.from_hash(h)
-    paths = map(lambda f: file_storage(f.original), a.items)
+    paths = [file_storage(f.original) for f in a.items]
     zip_path = file_storage(h + ".zip")
 
     if os.path.exists(zip_path):
@@ -79,6 +79,7 @@ def process_file(path, h, ignore_limit):
         processor = 'default'
     finally:
         if processor == 'default': # Unrecognised file type
+            print("failed file ",h)
             failed = FailedFile(hash=h, status="unrecognised")
             failed.save()
 
@@ -93,7 +94,7 @@ def process_file(path, h, ignore_limit):
 
     setattr(f.flags, 'nsfw', False)
     if result and result['flags']:
-        for flag, value in result['flags'].items():
+        for flag, value in list(result['flags'].items()):
             setattr(f.flags, flag, value)
 
     f.save()

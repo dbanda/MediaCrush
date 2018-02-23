@@ -336,7 +336,7 @@ class APIView(FlaskView):
             return {'error': 401}, 401
 
         # At this point, we're authenticated and o is the object.
-        for flag, value in request.form.items():
+        for flag, value in list(request.form.items()):
             v = True if value == 'true' else False
 
             try:

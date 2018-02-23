@@ -57,7 +57,7 @@ class UtilsTestCase(APITestCase):
         response = self.client.get('/api/asdfasdfasdf')
 
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(json.loads(response.data), {u'error': 404})
+        self.assertEqual(json.loads(response.data), {'error': 404})
 
     def test_cors(self):
         response = self.client.get('/api/asjfglsfdg', headers={
@@ -91,8 +91,8 @@ class AlbumTestCase(APITestCase):
         hashes = [f['hash'] for f in files]
 
         self.assertEqual(response.status_code, 200)
-        self.assertIn(u'3H3zGlUzzwF4', hashes)
-        self.assertIn(u'HM-nQeR0oJ7p', hashes)
+        self.assertIn('3H3zGlUzzwF4', hashes)
+        self.assertIn('HM-nQeR0oJ7p', hashes)
 
     def test_album_issue_422(self):
         h = [
@@ -188,7 +188,7 @@ class UploadTestCase(APITestCase):
         response = self._upload('cat.png')
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.data), {u'hash': u'HM-nQeR0oJ7p'})
+        self.assertEqual(json.loads(response.data), {'hash': 'HM-nQeR0oJ7p'})
 
     def test_upload_twice(self):
         self._upload('cat.png')
@@ -207,7 +207,7 @@ class URLUploadTestCase(APITestCase):
     def test_upload_url(self):
         h = self._get_url_hash('https://mediacru.sh/6BRr_XmH2VRq.png')
 
-        self.assertEqual(h, u'OyDU_AfIeZts')
+        self.assertEqual(h, 'OyDU_AfIeZts')
 
     def test_url_info(self):
         urls = [
@@ -247,18 +247,18 @@ class InfoTestCase(APITestCase):
 
         response = self.client.get('/api/info?list=' + ','.join(h))
 
-        self.assertIn(u'3H3zGlUzzwF4', response.data)
-        self.assertIn(u'HM-nQeR0oJ7p', response.data)
+        self.assertIn('3H3zGlUzzwF4', response.data)
+        self.assertIn('HM-nQeR0oJ7p', response.data)
 
     def test_exists(self):
         h = self._get_hash('cat.png')
         response = self.client.get('/api/%s/exists' % h)
 
-        self.assertEqual(json.loads(response.data), {u'exists': True})
+        self.assertEqual(json.loads(response.data), {'exists': True})
 
     def test_exists_bad_hash(self):
         response = self.client.get('/api/gfsdgf/exists')
-        self.assertEqual(json.loads(response.data), {u'exists': False})
+        self.assertEqual(json.loads(response.data), {'exists': False})
 
 class DeleteTestCase(APITestCase):
     def test_delete(self):
@@ -291,10 +291,10 @@ class FlagsTestCase(APITestCase):
 
         obj = json.loads(response.data)
         self.assertEqual(obj['flags'], {
-            u'autoplay': True,
-            u'loop': True,
-            u'mute': True,
-            u'nsfw': False
+            'autoplay': True,
+            'loop': True,
+            'mute': True,
+            'nsfw': False
         })
 
     def test_correct_flags_mp4(self):
@@ -305,10 +305,10 @@ class FlagsTestCase(APITestCase):
 
         obj = json.loads(response.data)
         self.assertEqual(obj['flags'], {
-            u'autoplay': False,
-            u'loop': False,
-            u'mute': False,
-            u'nsfw': False
+            'autoplay': False,
+            'loop': False,
+            'mute': False,
+            'nsfw': False
         })
 
     def test_change_flags(self):
@@ -320,7 +320,7 @@ class FlagsTestCase(APITestCase):
         self.assertEqual(response.status_code, 200)
 
         o = json.loads(response.data)
-        self.assertEqual(o['flags'][u'autoplay'], False)
+        self.assertEqual(o['flags']['autoplay'], False)
 
     def test_change_flags_unauthorised(self):
         h = self._get_hash('cat.gif', wait_ready=True)

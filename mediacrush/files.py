@@ -7,7 +7,7 @@ import requests
 import re
 
 from flask import current_app
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 from mediacrush.config import _cfg
 from mediacrush.paths import file_storage, shard
@@ -165,4 +165,4 @@ def upload(f, filename):
     return identifier, 200
 
 
-to_id = lambda h: base64.b64encode(h)[:12].replace('/', '_').replace('+', '-')
+to_id = lambda h: base64.b64encode(h).decode()[:12].replace('/', '_').replace('+', '-')
