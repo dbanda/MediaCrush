@@ -113,7 +113,6 @@ def inject():
 
 @app.route("/")
 def index():
-    print("going home/")
     return render_template("index.html")
 
 @app.route("/mine")
