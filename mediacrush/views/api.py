@@ -170,7 +170,8 @@ class APIView(FlaskView):
             o = klass.from_hash(h)
             if not check_password_hash(o.ip, get_ip()):
                 return {'error': 401}, 401
-        except:
+        except Exception as e:
+            print("delete exp",e)
             return {'error': 401}, 401
 
         deletion_procedures[klass](o)
@@ -231,10 +232,12 @@ class APIView(FlaskView):
 
         try:
             success = f.download(url)
-        except FileTooBig:
+        except FileTooBig as e:
+            print("fille toon big",e)
             return {'error': 413}, 413
 
-        except Exception:
+        except Exception as e:
+            print("exception",e)
             return {'error': 400}, 400
 
         if not success:
@@ -332,7 +335,8 @@ class APIView(FlaskView):
             o = klass.from_hash(h)
             if not check_password_hash(o.ip, get_ip()):
                 return {'error': 401}, 401
-        except:
+        except Exception as e:
+            print("exception",e)
             return {'error': 401}, 401
 
         # At this point, we're authenticated and o is the object.
@@ -341,7 +345,8 @@ class APIView(FlaskView):
 
             try:
                 setattr(o.flags, flag, v)
-            except AttributeError:
+            except AttributeError as e:
+                print("error",e)
                 return {'error': 415}, 415
 
         o.save()
@@ -364,7 +369,8 @@ class APIView(FlaskView):
             o = klass.from_hash(h) # We don't care about the object type
             if not check_password_hash(o.ip, get_ip()):
                 return {'error': 401}, 401
-        except:
+        except Exception as e:
+            print("error",e)
             return {'error': 401}, 401
 
         if o.text_locked:

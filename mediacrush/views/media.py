@@ -39,8 +39,8 @@ def _template_params(f):
     try:
         if request.cookies.get('hist-opt-out', '0') == '1':
             can_delete = check_password_hash(f.ip, get_ip())
-    except:
-        pass
+    except Exception as e:
+        print(e)
 
     mimetype = f.mimetype
     processor = get_processor(f.processor)
@@ -55,14 +55,14 @@ def _template_params(f):
             for t in blacklist:
                 if t in types:
                     types.remove(t)
-        except:
-            pass
+        except Exception as e:
+            print(e)
     metadata = {}
     if f.metadata and f.metadata != 'null':
         try:
             metadata = json.loads(f.metadata)
-        except:
-            pass
+        except Exception as e:
+            print(e)
     subtitles = None
     if 'subtitles' in metadata and 'streams' in metadata['subtitles']:
         for stream in metadata['subtitles']['streams']:
@@ -109,8 +109,8 @@ def _album_params(album):
         if f.metadata and f.metadata != 'null':
             try:
                 metadata = json.loads(f.metadata)
-            except:
-                pass
+            except Exception as e:
+                print(e)
         if 'has_subtitles' in metadata:
             subtitles = metadata['has_subtitles']
 
@@ -118,8 +118,8 @@ def _album_params(album):
     try:
         if request.cookies.get('hist-opt-out', '0') == '1':
             can_delete = check_password_hash(f.ip, get_ip())
-    except:
-        pass
+    except Exception as e:
+        print(e)
 
     if album.description:
         album.description = slimdown.convert(album.description)

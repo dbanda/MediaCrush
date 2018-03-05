@@ -81,7 +81,8 @@ def compression_rate(originalpath, f):
             convsize = os.path.getsize(file_storage("%s.%s" % (f.hash, ext)))
             print("%s: %s (%s)" % (ext, convsize, original_size))
             minsize = min(minsize, convsize)
-        except OSError:
+        except OSError as e:
+            print("oserror",e)
             continue # One of the target files wasn't processed.
                      # This will fail later in the processing workflow.
 
@@ -107,4 +108,5 @@ def delete_file_storage(hash):
                     try:
                         os.unlink(os.path.join(root, f))
                     except: pass # It's fine if one or more files are missing - it means that the processing pipeline might not have got to them.
-    except: pass
+    except Exception as e:
+        print("delete failed",e) 
