@@ -1,0 +1,27 @@
+# default location is /etc/default/celeryd
+CELERYD_NODES="worker1"
+
+CELERY_BIN="/home/dbanda/.local/bin/celery"
+
+# App instance to use
+CELERY_APP="mediacrush"
+
+# Where to chdir at start.
+CELERYD_CHDIR="/home/dbanda/MediaCrush/"
+
+# Extra command-line arguments to the worker
+CELERYD_OPTS="-Q celery,priority --time-limit=300 --concurrency=8"
+
+# %n will be replaced with the first part of the nodename.
+CELERYD_LOG_FILE="/var/log/celery/celery.log"
+CELERYD_PID_FILE="/var/run/celery/%n.pid"
+
+# Workers should run as an unprivileged user.
+#   You need to create this user manually (or you can choose
+#   a user/group combination that already exists (e.g., nobody).
+CELERYD_USER="dbanda"
+#CELERYD_GROUP="celery"
+
+# If enabled pid and log directories will be created if missing,
+# and owned by the userid/group configured.
+CELERY_CREATE_DIRS=1
