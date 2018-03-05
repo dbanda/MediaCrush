@@ -285,7 +285,7 @@ def detect_imagemagick(path):
     a(path)
     a.run()
     try:
-        result = a.stdout[0].decode().split('\n')
+        result = a.stdout[0].split('\n')
         # Get mime type and dimensions
         mimetype = None
         metadata = None
@@ -320,8 +320,8 @@ def detect_imagemagick(path):
             'processor_state': None,
             'flags': None
         }
-    except:
-        print("ImageMagick failed detection")
+    except Exception as e:
+        print("ImageMagick failed detection",e)
         return None
 
 def detect_plaintext(path):
