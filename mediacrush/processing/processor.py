@@ -33,6 +33,7 @@ class Processor(object):
             raise TimeoutException
 
         if tlc.returncode != 0 and self.important and not ignoreNonZero:
+            print("tlc execution failed:" ,tlc.stdout)
             raise ProcessingException
 
     def sync(self):

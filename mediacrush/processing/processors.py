@@ -198,7 +198,8 @@ def convert_to_vtt(path):
             try:
                 int(l.strip())
                 mode += 1
-            except: pass
+            except Exception as e:
+                print("convert_to_vtt err",e) 
         elif mode == 1: # Parsing timecode
             # The only difference between SRT and VTT timecodes is that VTT uses . instead of ,
             vtt += l.replace(',', '.') + '\n'

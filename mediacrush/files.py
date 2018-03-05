@@ -37,7 +37,7 @@ class URLFile(object):
 
     def save(self, path):
         bufsize = 1024 * 1024
-        with open(path, "w") as f:
+        with open(path, "wb") as f:
             while True:
                 cpbuffer = self.f.read(bufsize)
                 if cpbuffer:

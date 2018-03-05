@@ -21,8 +21,10 @@ class Invocation(object):
     def _target(self):
         try:
             self.process = subprocess.Popen(self.args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            self.stdout = self.process.communicate()
-        except:
+            outs, errs = self.process.communicate()
+            self.stdout = outs.decode(), errs.decode()
+        except Exception as e:
+            print("Invocation failed: ",e)
             self.crashed = True
             return
 
@@ -30,7 +32,7 @@ class Invocation(object):
         if not self.args:
             self.args = self.command.split()
 
-        print("running Invocation:",self.command,self.args )
+        print("running Invocation:",self.command," ".join(self.args) )
 
         thread = threading.Thread(target=self._target)
         thread.start()
